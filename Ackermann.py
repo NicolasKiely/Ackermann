@@ -1,4 +1,17 @@
-''' Evaluates Ackermann function '''
+''' Evaluates Ackermann function
+
+Adopted from here: http://www.eprg.org/computerphile/recursion.htm
+
+Usage:
+    python Ackermann.py <brute|cache> <m> <n>
+    Where
+        <brute|cache> specifies whether to enable the cache
+        <m> is the first parameter of the Ackermann function
+        <n> is the second parameter of the Ackermann function
+'''
+
+import sys
+
 
 class Ackermann(object):
     ''' Wrapper class for the ackerman function '''
@@ -26,3 +39,17 @@ class Ackermann(object):
 
         return self.evaluate(m-1, self.evaluate(m, n-1))
 
+
+def print_usage():
+    print 'Usage:'
+    print '\tpython %s <brute|cache> <m> <n>'
+    print 'Where:'
+    print '\t<brute|cache> specifies whether to enable the cache'
+    print '\t<m> is the first parameter of the Ackermann function'
+    print '\t<n> is the second parameter of the Ackermann function'
+
+# main()
+if __name__ == '__main__':
+    if len(sys.argv) != 4: 
+        print_usage()
+        exit()
