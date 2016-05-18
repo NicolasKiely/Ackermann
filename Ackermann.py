@@ -17,13 +17,13 @@ class Ackermann(object):
     ''' Wrapper class for the ackerman function '''
     def __init__(self, use_cache):
         ''' Initialize, setup cache if use_cache==True '''
-        self.use_cache = use_cache
+        # Number of function calls
+        self.call_count = 0
 
+        self.use_cache = use_cache
         if use_cache:
             # Cache of evaluated (m,n) => f(m,n) pairs
             self.cache = {}
-            # Number of function calls
-            self.call_count = 0
 
 
     def evaluate(self, m, n):
@@ -31,13 +31,25 @@ class Ackermann(object):
         # Increment call count
         self.call_count += 1
 
+        if self.use_cache:
+            # Check cache
+            if (m, n) in self.cache:
+                return self.cache[(m, n)]
+
         if m == 0:
-            return n + 1
+            results = n + 1
 
-        if n == 0:
-            return self.evaluate(m-1, 1)
+        elif n == 0:
+            results = self.evaluate(m-1, 1)
+        
+        else:
+            results = self.evaluate(m-1, self.evaluate(m, n-1))
 
-        return self.evaluate(m-1, self.evaluate(m, n-1))
+        if self.use_cache:
+            # Save to cache
+            self.cache[(m, n)] = results
+
+        return results
 
 
 def print_usage():
@@ -101,3 +113,11 @@ if __name__ == '__main__':
             print
             print_usage()
             exit()
+
+    # Argument parsing done, now setup ackermann function and evaluate
+    ack = Ackermann(use_cache)
+    results = ack.evaluate(*ack_pars)
+
+    # Show results
+    print 'Ackermann(%d, %d) is: %d' % (ack_pars[0], ack_pars[1], results)
+    print 'Number of calls: %d' % ack.call_count
