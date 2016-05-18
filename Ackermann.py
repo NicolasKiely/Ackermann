@@ -41,15 +41,41 @@ class Ackermann(object):
 
 
 def print_usage():
-    print 'Usage:'
-    print '\tpython %s <brute|cache> <m> <n>'
+    print 'Program Usage:'
+    print '\tpython %s <brute|cache> <m> <n>' % sys.argv[0]
     print 'Where:'
     print '\t<brute|cache> specifies whether to enable the cache'
     print '\t<m> is the first parameter of the Ackermann function'
     print '\t<n> is the second parameter of the Ackermann function'
 
+# Acceptable arguments for setting cache
+acceptable_nocache_args = ('brute', 'no', 'n')
+acceptable_yescache_args = ('cache', 'yes', 'y')
+
+
 # main()
 if __name__ == '__main__':
+    # Check number of arguments
     if len(sys.argv) != 4: 
+        print_usage()
+        exit()
+
+    # Check cache argument
+    par_cache = sys.argv[1].lower()
+    if par_cache in acceptable_nocache_args:
+        use_cache = False
+
+    elif par_cache in acceptable_yescache_args:
+        use_cache = True
+
+    else:
+        # Could not parse first argument
+        print 'Error, could not understand cache arg %s'
+        print 'To use the cache, valid strings are: '
+        print '\t' + ', '.join(acceptable_yescache_args)
+        print 'To not use the cache, valid strings are: '
+        print '\t' + ', '.join(acceptable_nocache_args)
+
+        print
         print_usage()
         exit()
