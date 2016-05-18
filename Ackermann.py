@@ -52,6 +52,9 @@ def print_usage():
 acceptable_nocache_args = ('brute', 'no', 'n')
 acceptable_yescache_args = ('cache', 'yes', 'y')
 
+# Message shown when bad ackermann argument passed
+bad_number_msg = 'Error, expected positive integer %s argument, got "%s"'
+
 
 # main()
 if __name__ == '__main__':
@@ -79,3 +82,22 @@ if __name__ == '__main__':
         print
         print_usage()
         exit()
+
+    # Check m and arguments
+    ack_pars = [0, 0]
+    for i, name in enumerate(('<m>', '<n>')):
+        try:
+            # Cast parameter to integer
+            par = sys.argv[2+i]
+            ack_pars[i] = int(par)
+
+            # Make sure parameter is positive
+            if ack_pars[i] < 0:
+                raise ValueError
+
+        except ValueError:
+            # Handle casting error
+            print bad_number_msg % (name, par)
+            print
+            print_usage()
+            exit()
